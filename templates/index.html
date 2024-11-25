@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Notifications</h1>
+    <button id="fetch-jkpsc">Fetch JKPSC Notifications</button>
+    <button id="fetch-jkssb">Fetch JKSSB Notifications</button>
+    <button id="fetch-jkbopee">Fetch JKBOPEE Notifications</button>
+
+    <h2 id="notification-title"></h2>
+    <ul id="notifications"></ul>
+
+    <script>
+        /*// Function to fetch notifications and update UI
+        function fetchNotifications(url, title) {
+            // Clear any previous notifications
+            $('#notifications').empty();
+            $('#notification-title').text(title);
+
+            // Fetch data
+            $.get(url, function(data) {
+                if (data.notifications) {
+                    data.notifications.forEach(notification => {
+                        $('#notifications').append(`<li><a href="${notification.url || notification.link}" target="_blank">${notification.title}</a></li>`);
+                    });
+                } else {
+                    $('#notifications').append('<li>No notifications available.</li>');
+                }
+            }).fail(function() {
+                $('#notifications').append('<li>Failed to fetch notifications.</li>');
+            });
+        }*/
+		function fetchNotifications(url, title) {
+    const flaskBaseURL = 'http://127.0.0.1:5000';
+    const fullURL = flaskBaseURL + url;
+
+    // Clear and fetch notifications as before
+    $('#notifications').empty();
+    $('#notification-title').text(title);
+
+    $.get(fullURL, function(data) {
+        if (data.notifications) {
+            data.notifications.forEach(notification => {
+                $('#notifications').append(`<li><a href="${notification.url || notification.link}" target="_blank">${notification.title}</a></li>`);
+            });
+        } else {
+            $('#notifications').append('<li>No notifications available.</li>');
+        }
+    }).fail(function() {
+        $('#notifications').append('<li>Failed to fetch notifications.</li>');
+    });
+}
+
+        // Event listeners for buttons
+        $('#fetch-jkpsc').on('click', function() {
+            fetchNotifications('/fetch-notifications', 'JKPSC Notifications');
+        });
+
+        $('#fetch-jkssb').on('click', function() {
+            fetchNotifications('/fetch-jkssb-notifications', 'JKSSB Notifications');
+        });
+
+        $('#fetch-jkbopee').on('click', function() {
+            fetchNotifications('/fetch-jkbopee-notifications', 'JKBOPEE Notifications');
+        });
+    </script>
+</body>
+</html>
